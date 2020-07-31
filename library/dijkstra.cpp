@@ -22,18 +22,14 @@ void dijkstra(int start)
 {
     int seen[10010];
     int dist[10010];
-    for (int i = 0; i < 10010; i++)
-    {
-        seen[i] = WHITE;
-        dist[i] = INF;
-    }
 
-    //initialize
-    seen[start] = GRAY;
-    dist[start] = 0;
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-
-    pq.push(make_pair(0, start));
+    for (int i = 0; i < n; i++)
+    {
+        seen[i] = (i == start) ? GRAY : WHITE;
+        dist[i] = (i == start) ? 0 : INF;
+        pq.push(make_pair(dist[i], i));
+    }
 
     while (!pq.empty())
     {
@@ -43,15 +39,11 @@ void dijkstra(int start)
         int distU = now.first;
 
         seen[u] = BLACK;
-        if (dist[u] < distU)
-            continue;
 
         for (auto ne : G[u])
         {
             int v = ne.to;
             int cv = ne.cost;
-            if (seen[v] == BLACK)
-                continue;
             if (dist[u] + cv < dist[v])
             {
                 dist[v] = dist[u] + cv;
